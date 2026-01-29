@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hanson Pest & Wildlife | Eastern Oklahoma Pest Control</title>
+  <meta name="description" content="Professional pest control and wildlife removal serving Tulsa, Muskogee, Tahlequah and Eastern Oklahoma. 24/7 emergency service. Licensed & insured.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --navy: #0f172a; --navy-light: #1e293b; --gold: #f59e0b; --gold-dark: #d97706; --green: #10b981; --blue: #3b82f6; --white: #ffffff; --gray: #94a3b8; }
+    body { font-family: 'Outfit', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; }
+    .header { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%); padding: 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { font-size: 36px; }
+    .logo-text h1 { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
+    .logo-text span { font-size: 11px; color: var(--gray); letter-spacing: 3px; }
+    .header-cta { display: flex; gap: 12px; align-items: center; }
+    .phone-link { color: var(--gold); text-decoration: none; font-weight: 600; font-size: 18px; }
+    .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: var(--navy); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: transform 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .hero { padding: 80px 20px; text-align: center; background: radial-gradient(ellipse at top, rgba(59,130,246,0.1) 0%, transparent 50%), var(--navy-light); }
+    .hero h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; margin-bottom: 20px; line-height: 1.1; }
+    .hero h2 span { color: var(--gold); }
+    .hero p { font-size: 20px; color: var(--gray); max-width: 600px; margin: 0 auto 32px; }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-large { padding: 18px 36px; font-size: 18px; border-radius: 12px; }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2); text-decoration: none; }
+    .trust-badges { display: flex; gap: 32px; justify-content: center; margin-top: 48px; flex-wrap: wrap; }
+    .badge { display: flex; align-items: center; gap: 8px; color: var(--gray); font-size: 14px; }
+    .badge-icon { font-size: 20px; }
+    .services { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h3 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+    .section-title p { color: var(--gray); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .service-card { background: var(--navy-light); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s, border-color 0.2s; }
+    .service-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+    .service-icon { font-size: 40px; margin-bottom: 16px; }
+    .service-card h4 { font-size: 20px; margin-bottom: 8px; }
+    .service-card p { color: var(--gray); font-size: 14px; margin-bottom: 16px; }
+    .service-price { color: var(--green); font-weight: 700; font-size: 18px; }
+    .ai-section { padding: 80px 20px; background: linear-gradient(180deg, var(--navy) 0%, #0c1929 100%); text-align: center; }
+    .ai-section h3 { font-size: 32px; margin-bottom: 16px; }
+    .ai-section > p { color: var(--gray); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .ai-feature-box { background: var(--navy-light); border-radius: 24px; padding: 48px; max-width: 500px; margin: 0 auto; border: 1px solid rgba(59,130,246,0.3); }
+    .ai-steps { text-align: left; margin-bottom: 32px; }
+    .ai-step { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+    .step-num { background: var(--blue); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    .step-text h5 { font-size: 16px; margin-bottom: 4px; }
+    .step-text p { color: var(--gray); font-size: 14px; margin: 0; }
+    .coverage { padding: 80px 20px; text-align: center; }
+    .coverage h3 { font-size: 32px; margin-bottom: 32px; }
+    .areas { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: 800px; margin: 0 auto; }
+    .area-tag { background: var(--navy-light); padding: 12px 24px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); }
+    .cta-section { padding: 80px 20px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); text-align: center; }
+    .cta-section h3 { font-size: 36px; color: var(--navy); margin-bottom: 16px; }
+    .cta-section p { color: var(--navy); opacity: 0.8; margin-bottom: 32px; font-size: 18px; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-dark { background: var(--navy); color: var(--white); padding: 18px 36px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 18px; }
+    .btn-outline-dark { background: transparent; color: var(--navy); padding: 18px 36px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 18px; border: 2px solid var(--navy); }
+    .footer { padding: 48px 20px; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.1); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }
+    .footer-col h5 { color: var(--gold); margin-bottom: 16px; font-size: 14px; letter-spacing: 2px; }
+    .footer-col p, .footer-col a { color: var(--gray); font-size: 14px; text-decoration: none; display: block; margin-bottom: 8px; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { text-align: center; padding-top: 32px; margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--gray); font-size: 13px; }
+    @media (max-width: 768px) { .header-inner { flex-direction: column; gap: 16px; } .phone-link { display: none; } .hero { padding: 48px 20px; } .hero-buttons { flex-direction: column; padding: 0 20px; } .trust-badges { flex-direction: column; gap: 16px; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .hero h2, .hero p, .hero-buttons { animation: fadeInUp 0.6s ease-out forwards; }
+    .hero p { animation-delay: 0.1s; } .hero-buttons { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🦝</span>
+        <div class="logo-text">
+          <h1>HANSON</h1>
+          <span>PEST & WILDLIFE</span>
+        </div>
+      </div>
+      <div class="header-cta">
+        <a href="tel:+19189216913" class="phone-link">📞 (918) 921-6913</a>
+        <a href="#book" class="btn-primary">Book Now</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Oklahoma's Trusted <span>Pest & Wildlife</span> Experts</h2>
+    <p>Fast, professional pest control and humane wildlife removal across Eastern Oklahoma. Same-day service available.</p>
+    <div class="hero-buttons">
+      <a href="#book" class="btn-primary btn-large">📅 Schedule Service</a>
+      <a href="#ai-tool" class="btn-secondary btn-large">📸 ID My Pest (Free)</a>
+    </div>
+    <div class="trust-badges">
+      <div class="badge"><span class="badge-icon">✓</span><span>Licensed & Insured</span></div>
+      <div class="badge"><span class="badge-icon">⚡</span><span>Same-Day Service</span></div>
+      <div class="badge"><span class="badge-icon">🌙</span><span>24/7 Emergency</span></div>
+      <div class="badge"><span class="badge-icon">💯</span><span>Satisfaction Guaranteed</span></div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="section-title">
+      <h3>Our Services</h3>
+      <p>Complete pest control and wildlife solutions for homes and businesses</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-icon">🐜</div><h4>General Pest Control</h4><p>Ants, roaches, spiders, silverfish, and other common household pests eliminated.</p><span class="service-price">From $100</span></div>
+      <div class="service-card"><div class="service-icon">🐀</div><h4>Rodent Control</h4><p>Mice and rat removal with exclusion services to prevent return.</p><span class="service-price">From $150</span></div>
+      <div class="service-card"><div class="service-icon">🐝</div><h4>Stinging Insects</h4><p>Wasp, hornet, and yellow jacket nest removal. Bee relocation available.</p><span class="service-price">From $150</span></div>
+      <div class="service-card"><div class="service-icon">🦝</div><h4>Wildlife Removal</h4><p>Humane trapping and relocation of raccoons, opossums, skunks, and more.</p><span class="service-price">From $200</span></div>
+      <div class="service-card"><div class="service-icon">🐿️</div><h4>Squirrel Exclusion</h4><p>Remove squirrels from attics and seal entry points permanently.</p><span class="service-price">From $200</span></div>
+      <div class="service-card"><div class="service-icon">🐍</div><h4>Snake Removal</h4><p>Safe removal of venomous and non-venomous snakes from your property.</p><span class="service-price">From $150</span></div>
+      <div class="service-card"><div class="service-icon">🛏️</div><h4>Bed Bug Treatment</h4><p>Complete elimination with heat treatment or chemical application.</p><span class="service-price">From $350</span></div>
+      <div class="service-card"><div class="service-icon">🏠</div><h4>Termite Protection</h4><p>Inspection, treatment, and prevention plans for termite control.</p><span class="service-price">From $500</span></div>
+    </div>
+  </section>
+
+  <section class="ai-section" id="ai-tool">
+    <h3>🤖 Free AI Pest Identifier</h3>
+    <p>Not sure what's bugging you? Take a photo and our AI will identify the pest and give you an instant estimate.</p>
+    <div class="ai-feature-box">
+      <div class="ai-steps">
+        <div class="ai-step"><span class="step-num">1</span><div class="step-text"><h5>Snap a Photo</h5><p>Take a picture of the pest, droppings, or damage</p></div></div>
+        <div class="ai-step"><span class="step-num">2</span><div class="step-text"><h5>AI Analysis</h5><p>Our AI identifies the pest in seconds</p></div></div>
+        <div class="ai-step"><span class="step-num">3</span><div class="step-text"><h5>Get Your Estimate</h5><p>See recommended treatment and price range</p></div></div>
+      </div>
+      <a href="/pest-id" class="btn-primary btn-large" style="display: inline-block;">📸 Try Pest Identifier</a>
+    </div>
+  </section>
+
+  <section class="coverage">
+    <h3>Serving Eastern Oklahoma</h3>
+    <div class="areas">
+      <span class="area-tag">Tulsa</span><span class="area-tag">Muskogee</span><span class="area-tag">Tahlequah</span><span class="area-tag">Broken Arrow</span><span class="area-tag">Wagoner</span><span class="area-tag">Pryor</span><span class="area-tag">Claremore</span><span class="area-tag">Fort Gibson</span><span class="area-tag">Hulbert</span><span class="area-tag">Gore</span><span class="area-tag">Checotah</span><span class="area-tag">McAlester</span>
+    </div>
+  </section>
+
+  <section class="cta-section" id="book">
+    <h3>Ready to Get Started?</h3>
+    <p>Book online or call us now. Same-day service often available.</p>
+    <div class="cta-buttons">
+      <a href="https://clienthub.getjobber.com/booking/2d41cb32-b8bd-404e-ba90-e86c72bfd527" class="btn-dark">📅 Book Online</a>
+      <a href="tel:+19189216913" class="btn-outline-dark">📞 (918) 921-6913</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col"><h5>CONTACT</h5><p>📞 (918) 921-6913</p><p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98f1f6fef7d8f0f9f6ebf7f6e8fdebecf9f6fceff1f4fcf4f1fefdb6fbf7f5">[email&#160;protected]</a></p><p>📍 Eastern Oklahoma</p></div>
+      <div class="footer-col"><h5>HOURS</h5><p>Mon-Fri: 7am - 6pm</p><p>Saturday: 8am - 2pm</p><p>24/7 Emergency Service</p></div>
+      <div class="footer-col"><h5>SERVICES</h5><a href="#services">Pest Control</a><a href="#services">Wildlife Removal</a><a href="#services">Rodent Control</a><a href="#services">Termite Treatment</a></div>
+      <div class="footer-col"><h5>QUICK LINKS</h5><a href="#book">Book Service</a><a href="#ai-tool">Pest Identifier</a><a href="tel:+19189216913">Emergency Line</a></div>
+    </div>
+    <div cla

@@ -240,7 +240,6 @@
     let currentFile = null;
     let imageBase64 = null;
 
-    // Drag and drop handlers
     dropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
       dropZone.classList.add('dragover');
@@ -306,79 +305,22 @@
       errorDiv.classList.remove('visible');
 
       try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('/api/pest-id', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
-            messages: [{
-              role: 'user',
-              content: [
-                {
-                  type: 'image',
-                  source: {
-                    type: 'base64',
-                    media_type: currentFile.type,
-                    data: imageBase64
-                  }
-                },
-                {
-                  type: 'text',
-                  text: `You are a pest identification expert for Hanson Pest & Wildlife in Eastern Oklahoma. Analyze this image and identify any pest, insect, rodent, wildlife, or signs of infestation (droppings, damage, nests, etc.).
-
-Respond ONLY with valid JSON in this exact format (no markdown, no backticks):
-{
-  "identified": true,
-  "pestName": "Common name of the pest",
-  "scientificName": "Scientific/Latin name",
-  "icon": "Single emoji representing this pest",
-  "confidence": 85,
-  "description": "2-3 sentence description of what this pest is and its characteristics",
-  "risks": "2-3 sentences about health risks, property damage, or concerns",
-  "treatment": "2-3 sentences about professional treatment methods",
-  "prevention": ["Prevention tip 1", "Prevention tip 2", "Prevention tip 3", "Prevention tip 4"],
-  "priceRange": "$150 - $300",
-  "category": "general_pest|rodent|wildlife|stinging|bed_bug|termite|snake"
-}
-
-If the image does not show a pest, insect, animal, or signs of infestation, respond with:
-{
-  "identified": false,
-  "message": "Brief explanation of what you see instead"
-}
-
-Base pricing on these Hanson Pest & Wildlife rates:
-- General Pest Control: From $100
-- Rodent Control: From $150  
-- Stinging Insects: From $150
-- Wildlife Removal: From $200
-- Squirrel Exclusion: From $200
-- Snake Removal: From $150
-- Bed Bug Treatment: From $350
-- Termite Protection: From $500`
-                }
-              ]
-            }]
+            image: imageBase64,
+            mediaType: currentFile.type
           })
         });
 
-        const data = await response.json();
-        
-        if (data.error) {
-          throw new Error(data.error.message || 'API error occurred');
-        }
+        const result = await response.json();
 
-        const textContent = data.content.find(c => c.type === 'text');
-        if (!textContent) {
-          throw new Error('No response from AI');
+        if (result.error) {
+          throw new Error(result.error);
         }
-
-        // Parse the JSON response
-        const cleanedText = textContent.text.replace(/```json\n?|\n?```/g, '').trim();
-        const result = JSON.parse(cleanedText);
 
         if (!result.identified) {
           errorDiv.textContent = '🤔 ' + (result.message || "This doesn't appear to be a pest. Please upload a clear photo of a pest, insect, rodent, or signs of infestation.");

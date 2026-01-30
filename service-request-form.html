@@ -1,0 +1,434 @@
+<!-- 
+  Hanson Pest & Wildlife - Service Request Form
+  Add this to your website or use as standalone page
+  
+  Replace WEBHOOK_URL with your n8n webhook URL:
+  https://your-n8n-instance.com/webhook/hanson-lead
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Service | Hanson Pest & Wildlife</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2d5a27;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2d5a27;
+            box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .urgency-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .urgency-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .urgency-option input {
+            display: none;
+        }
+        
+        .urgency-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .urgency-option input:checked + label {
+            border-color: #2d5a27;
+            background: #e8f5e9;
+            color: #2d5a27;
+        }
+        
+        .urgency-option label:hover {
+            border-color: #aaa;
+        }
+        
+        .consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+        
+        .consent input {
+            width: auto;
+            margin-top: 3px;
+        }
+        
+        .consent label {
+            font-weight: normal;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0;
+        }
+        
+        .consent a {
+            color: #2d5a27;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2d5a27;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        
+        .submit-btn:hover {
+            background: #3d7a37;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .submit-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .success-message h2 {
+            color: #2d5a27;
+            margin-bottom: 12px;
+        }
+        
+        .success-message p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .form-content.hidden {
+            display: none;
+        }
+        
+        .error-message {
+            background: #fff3f3;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .phone-note {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 6px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        footer a {
+            color: #2d5a27;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦝 Hanson Pest & Wildlife</h1>
+            <p>Request Service - We'll call you to schedule!</p>
+        </div>
+        
+        <div class="form-card">
+            <div class="error-message" id="error-message"></div>
+            
+            <form id="service-form" class="form-content">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Smith">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="required">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="(918) 555-1234" required>
+                    <p class="phone-note">We'll call this number to schedule your appointment</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pest_type" class="required">Type of Pest or Wildlife Issue</label>
+                    <select id="pest_type" name="pest_type" required>
+                        <option value="">Select an option...</option>
+                        <option value="General Pest Control">General Pest Control (ants, spiders, roaches)</option>
+                        <option value="Rodents">Rodents (mice, rats)</option>
+                        <option value="Wildlife - Raccoon">Wildlife - Raccoon</option>
+                        <option value="Wildlife - Skunk">Wildlife - Skunk</option>
+                        <option value="Wildlife - Opossum">Wildlife - Opossum</option>
+                        <option value="Wildlife - Squirrel">Wildlife - Squirrel</option>
+                        <option value="Wasps/Bees">Wasps or Bees</option>
+                        <option value="Bed Bugs">Bed Bugs</option>
+                        <option value="Termites">Termites</option>
+                        <option value="Other">Other (describe below)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address" class="required">Service Address</label>
+                    <input type="text" id="address" name="address" placeholder="123 Main St" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city" class="required">City</label>
+                    <select id="city" name="city" required>
+                        <option value="">Select your city...</option>
+                        <option value="Tulsa">Tulsa</option>
+                        <option value="Broken Arrow">Broken Arrow</option>
+                        <option value="Owasso">Owasso</option>
+                        <option value="Bixby">Bixby</option>
+                        <option value="Jenks">Jenks</option>
+                        <option value="Sapulpa">Sapulpa</option>
+                        <option value="Sand Springs">Sand Springs</option>
+                        <option value="Claremore">Claremore</option>
+                        <option value="Wagoner">Wagoner</option>
+                        <option value="Coweta">Coweta</option>
+                        <option value="Catoosa">Catoosa</option>
+                        <option value="Glenpool">Glenpool</option>
+                        <option value="Other">Other (within 20mi of Tulsa)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>How urgent is this?</label>
+                    <div class="urgency-options">
+                        <div class="urgency-option">
+                            <input type="radio" id="urgency-normal" name="urgency" value="normal" checked>
+                            <label for="urgency-normal">📅 Normal</label>
+                        </div>
+                        <div class="urgency-option">
+                            <input type="radio" id="urgency-soon" name="urgency" value="soon">
+                            <label for="urgency-soon">⚡ ASAP</label>
+                        </div>
+                        <div class="urgency-option">
+                            <input type="radio" id="urgency-emergency" name="urgency" value="emergency">
+                            <label for="urgency-emergency">🚨 Emergency</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional Details</label>
+                    <textarea id="notes" name="notes" placeholder="Describe the issue, location in the home, pets, access instructions, etc."></textarea>
+                </div>
+                
+                <div class="consent">
+                    <input type="checkbox" id="sms_consent" name="sms_consent" required>
+                    <label for="sms_consent">
+                        I agree to receive text messages from Hanson Pest & Wildlife about my service request. 
+                        Message frequency varies. Reply STOP to unsubscribe. 
+                        <a href="/privacy" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Request Service Call
+                </button>
+            </form>
+            
+            <div class="success-message" id="success-message">
+                <div class="success-icon">✅</div>
+                <h2>Request Received!</h2>
+                <p>Thank you! Someone from our team will call you shortly to schedule your service appointment.</p>
+                <p><strong>Phone:</strong> <a href="tel:+19189216913">(918) 921-6913</a></p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>
+                <a href="/privacy">Privacy Policy</a> · 
+                <a href="/terms">Terms of Service</a> · 
+                <a href="tel:+19189216913">(918) 921-6913</a>
+            </p>
+            <p>© 2026 Hanson Pest & Wildlife. Eastern Oklahoma.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // REPLACE THIS WITH YOUR N8N WEBHOOK URL
+        const WEBHOOK_URL = 'https://rentals-investments-elected-ave.trycloudflare.com/webhook/hanson-lead';
+        
+        const form = document.getElementById('service-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+        
+        // Format phone number as user types
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = '(' + value;
+                } else if (value.length <= 6) {
+                    value = '(' + value.slice(0,3) + ') ' + value.slice(3);
+                } else {
+                    value = '(' + value.slice(0,3) + ') ' + value.slice(3,6) + '-' + value.slice(6,10);
+                }
+            }
+            e.target.value = value;
+        });
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            errorMessage.classList.remove('show');
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                pest_type: document.getElementById('pest_type').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                urgency: document.querySelector('input[name="urgency"]:checked').value,
+                notes: document.getElementById('notes').value,
+                sms_consent: document.getElementById('sms_consent').checked,
+                source: 'website',
+                submitted_at: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    // Show success
+                    form.classList.add('hidden');
+                    successMessage.classList.add('show');
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Something went wrong. Please call us at (918) 921-6913.';
+                errorMessage.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Request Service Call';
+            }
+        });
+    </script>
+</body>
+</html>

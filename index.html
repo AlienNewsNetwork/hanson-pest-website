@@ -1,107 +1,466 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Pest Identifier | Hanson Pest & Wildlife</title>
-  <meta name="description" content="Free AI-powered pest identification. Upload a photo and get instant pest identification with treatment recommendations.">
+  <title>Hanson Pest & Wildlife | Eastern Oklahoma Pest Control</title>
+  <meta name="description" content="Professional pest control and wildlife removal serving Tulsa, Muskogee, Tahlequah and Eastern Oklahoma. 24/7 emergency service. Licensed & insured.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --navy: #0f172a; --navy-light: #1e293b; --gold: #f59e0b; --gold-dark: #d97706; --green: #10b981; --blue: #3b82f6; --red: #ef4444; --white: #ffffff; --gray: #94a3b8; }
-    body { font-family: 'Outfit', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; min-height: 100vh; }
     
-    .header { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%); padding: 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-    .logo-icon { font-size: 36px; }
-    .logo-text h1 { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
-    .logo-text span { font-size: 11px; color: var(--gray); letter-spacing: 3px; }
-    .header-cta { display: flex; gap: 12px; align-items: center; }
-    .phone-link { color: var(--gold); text-decoration: none; font-weight: 600; font-size: 18px; }
-    .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: var(--navy); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: transform 0.2s; border: none; cursor: pointer; font-family: inherit; font-size: 16px; }
-    .btn-primary:hover { transform: translateY(-2px); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .main { max-width: 800px; margin: 0 auto; padding: 48px 20px; }
+    :root {
+      --navy: #1a2744;
+      --navy-dark: #0f1829;
+      --gold: #d4a853;
+      --gold-light: #e8c278;
+      --cream: #faf8f5;
+      --gray: #6b7280;
+    }
     
-    .page-header { text-align: center; margin-bottom: 48px; }
-    .page-header h2 { font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin-bottom: 16px; }
-    .page-header h2 span { color: var(--gold); }
-    .page-header p { color: var(--gray); font-size: 18px; max-width: 500px; margin: 0 auto; }
-
-    .upload-section { background: var(--navy-light); border-radius: 24px; padding: 48px 32px; border: 2px dashed rgba(255,255,255,0.2); text-align: center; transition: border-color 0.3s, background 0.3s; margin-bottom: 32px; }
-    .upload-section.dragover { border-color: var(--gold); background: rgba(245, 158, 11, 0.05); }
-    .upload-section.has-image { border-style: solid; border-color: var(--green); }
-
-    .upload-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.8; }
-    .upload-section h3 { font-size: 24px; margin-bottom: 8px; }
-    .upload-section p { color: var(--gray); margin-bottom: 24px; }
+    body {
+      font-family: 'Source Sans Pro', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      line-height: 1.6;
+    }
     
-    .upload-btn { display: inline-block; }
-    .file-input { display: none; }
+    /* Header */
+    .header {
+      background: var(--navy);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
     
-    .preview-container { display: none; margin-bottom: 24px; }
-    .preview-container.visible { display: block; }
-    .preview-image { max-width: 100%; max-height: 400px; border-radius: 16px; margin-bottom: 16px; }
-    .preview-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 8px; }
-    .preview-name { color: var(--gray); font-size: 14px; }
-    .remove-btn { background: var(--red); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 14px; }
-
-    .analyze-section { text-align: center; margin-bottom: 32px; }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     
-    .results-section { display: none; }
-    .results-section.visible { display: block; }
+    .logo {
+      text-decoration: none;
+      color: white;
+    }
     
-    .result-card { background: var(--navy-light); border-radius: 20px; padding: 32px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px; }
-    .result-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .result-icon { font-size: 48px; }
-    .result-title h3 { font-size: 28px; color: var(--gold); margin-bottom: 4px; }
-    .result-title p { color: var(--gray); font-size: 14px; }
+    .logo-text h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
     
-    .confidence-bar { margin-bottom: 24px; }
-    .confidence-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-    .confidence-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
-    .confidence-fill { height: 100%; background: linear-gradient(90deg, var(--green) 0%, var(--gold) 100%); border-radius: 4px; transition: width 0.5s ease-out; }
-
-    .result-details { display: grid; gap: 20px; }
-    .detail-item { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; }
-    .detail-item h4 { color: var(--gold); font-size: 14px; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; }
-    .detail-item p { color: var(--white); line-height: 1.7; }
-    .detail-item ul { color: var(--white); padding-left: 20px; }
-    .detail-item li { margin-bottom: 8px; }
-
-    .estimate-box { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%); border: 1px solid var(--green); border-radius: 16px; padding: 24px; text-align: center; margin-top: 24px; }
-    .estimate-box h4 { color: var(--green); margin-bottom: 8px; }
-    .estimate-price { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
-    .estimate-note { color: var(--gray); font-size: 14px; }
-
-    .cta-box { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); border-radius: 16px; padding: 32px; text-align: center; }
-    .cta-box h4 { color: var(--navy); font-size: 24px; margin-bottom: 8px; }
-    .cta-box p { color: var(--navy); opacity: 0.8; margin-bottom: 20px; }
-    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn-dark { background: var(--navy); color: var(--white); padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; }
-    .btn-outline-dark { background: transparent; color: var(--navy); padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; border: 2px solid var(--navy); }
-
-    .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 20px; }
-    .loading.visible { display: flex; }
-    .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .error-message { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--red); color: var(--white); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; display: none; }
-    .error-message.visible { display: block; }
-
-    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gray); text-decoration: none; margin-bottom: 24px; font-size: 14px; }
-    .back-link:hover { color: var(--white); }
-
-    @media (max-width: 768px) {
-      .header-inner { flex-direction: column; gap: 16px; }
+    .logo-text span {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .phone-link {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .phone-link:hover { color: var(--gold); }
+    
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+    
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+      padding: 60px 20px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a853' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+    
+    .hero-content {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    
+    .hero h2 span { color: var(--gold); }
+    
+    .hero p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+    }
+    
+    .btn-outline:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+    
+    /* Trust Bar */
+    .trust-bar {
+      background: var(--navy-dark);
+      padding: 16px 20px;
+      text-align: center;
+    }
+    
+    .trust-items {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      color: white;
+      font-size: 14px;
+    }
+    
+    .trust-items span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.9;
+    }
+    
+    /* Services */
+    .services {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .section-title h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 36px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    
+    .section-title p {
+      color: var(--gray);
+      font-size: 16px;
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .service-card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(26, 39, 68, 0.08);
+      transition: all 0.3s;
+      border: 1px solid rgba(26, 39, 68, 0.06);
+    }
+    
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26, 39, 68, 0.12);
+    }
+    
+    .service-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .service-card h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    
+    .service-card p {
+      color: var(--gray);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    
+    /* AI Tool Section */
+    .ai-section {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+      padding: 60px 20px;
+      color: white;
+    }
+    
+    .ai-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .ai-section h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    
+    .ai-section h3 span { color: var(--gold); }
+    
+    .ai-section > .ai-inner > p {
+      opacity: 0.9;
+      margin-bottom: 32px;
+      font-size: 17px;
+    }
+    
+    .ai-steps {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    
+    .ai-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+      max-width: 220px;
+    }
+    
+    .step-num {
+      background: var(--gold);
+      color: var(--navy);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .step-text h5 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    
+    .step-text p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    /* Coverage */
+    .coverage {
+      padding: 50px 20px;
+      text-align: center;
+      background: white;
+    }
+    
+    .coverage h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      color: var(--navy);
+      margin-bottom: 20px;
+    }
+    
+    .areas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .area-tag {
+      background: var(--cream);
+      color: var(--navy);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      background: var(--gold);
+      padding: 50px 20px;
+      text-align: center;
+    }
+    
+    .cta-section h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 32px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    
+    .cta-section p {
+      color: var(--navy);
+      opacity: 0.8;
+      margin-bottom: 24px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-dark {
+      background: var(--navy);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .btn-dark:hover {
+      background: var(--navy-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline-dark {
+      background: transparent;
+      border: 2px solid var(--navy);
+      color: var(--navy);
+      padding: 12px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .btn-outline-dark:hover {
+      background: var(--navy);
+      color: white;
+    }
+    
+    /* Footer */
+    .footer {
+      background: var(--navy-dark);
+      color: white;
+      padding: 50px 20px 30px;
+    }
+    
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+    
+    .footer-col h5 {
+      font-family: 'Oswald', sans-serif;
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    
+    .footer-col p,
+    .footer-col a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+      display: block;
+      text-decoration: none;
+    }
+    
+    .footer-col a:hover { color: var(--gold); }
+    
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    
+    /* Mobile */
+    @media (max-width: 600px) {
+      .header-inner { flex-direction: column; gap: 12px; }
       .phone-link { display: none; }
-      .upload-section { padding: 32px 20px; }
-      .result-header { flex-direction: column; text-align: center; }
-      .cta-buttons { flex-direction: column; }
+      .hero { padding: 40px 16px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .trust-items { flex-direction: column; gap: 12px; }
+      .ai-steps { flex-direction: column; align-items: center; }
+      .ai-step { max-width: 100%; }
     }
   </style>
 </head>
@@ -109,7 +468,6 @@
   <header class="header">
     <div class="header-inner">
       <a href="/" class="logo">
-        <span class="logo-icon">🦝</span>
         <div class="logo-text">
           <h1>HANSON</h1>
           <span>PEST & WILDLIFE</span>
@@ -122,248 +480,154 @@
     </div>
   </header>
 
-  <main class="main">
-    <a href="/" class="back-link">← Back to Home</a>
-    
-    <div class="page-header">
-      <h2>🤖 <span>AI Pest</span> Identifier</h2>
-      <p>Upload a photo of any pest, droppings, or damage and get instant identification with treatment recommendations.</p>
-    </div>
-
-    <div class="error-message" id="error"></div>
-
-    <div class="upload-section" id="dropZone">
-      <div class="preview-container" id="previewContainer">
-        <img id="previewImage" class="preview-image" alt="Preview">
-        <div class="preview-info">
-          <span class="preview-name" id="fileName"></span>
-          <button class="remove-btn" id="removeBtn">Remove</button>
-        </div>
-      </div>
-      <div id="uploadPrompt">
-        <div class="upload-icon">📸</div>
-        <h3>Upload a Photo</h3>
-        <p>Drag and drop an image here, or click to select</p>
-        <label class="btn-primary upload-btn">
-          Choose File
-          <input type="file" class="file-input" id="fileInput" accept="image/*">
-        </label>
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Eastern Oklahoma's <span>Trusted</span> Pest & Wildlife Experts</h2>
+      <p>Fast, humane removal of pests and wildlife. Licensed, insured, and locally owned. Same-day service available.</p>
+      <div class="hero-buttons">
+        <a href="https://clienthub.getjobber.com/booking/2d41cb32-b8bd-404e-ba90-e86c72bfd527" class="btn-primary btn-large">📅 Book Online</a>
+        <a href="tel:+19189216913" class="btn-primary btn-outline btn-large">📞 (918) 921-6913</a>
       </div>
     </div>
+  </section>
 
-    <div class="analyze-section" id="analyzeSection">
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <span>Analyzing your image...</span>
-      </div>
-      <button class="btn-primary" id="analyzeBtn" style="display: none; padding: 16px 48px; font-size: 18px;">
-        🔍 Identify This Pest
-      </button>
+  <div class="trust-bar">
+    <div class="trust-items">
+      <span>✓ Licensed & Insured</span>
+      <span>✓ Locally Owned</span>
+      <span>✓ Same-Day Service</span>
+      <span>✓ Humane Removal</span>
     </div>
+  </div>
 
-    <div class="results-section" id="results">
-      <div class="result-card">
-        <div class="result-header">
-          <span class="result-icon" id="resultIcon">🐜</span>
-          <div class="result-title">
-            <h3 id="pestName">Loading...</h3>
-            <p id="scientificName">Scientific name</p>
-          </div>
-        </div>
-
-        <div class="confidence-bar">
-          <div class="confidence-label">
-            <span>Identification Confidence</span>
-            <span id="confidencePercent">0%</span>
-          </div>
-          <div class="confidence-track">
-            <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
-          </div>
-        </div>
-
-        <div class="result-details">
-          <div class="detail-item">
-            <h4>🔎 Description</h4>
-            <p id="description">Loading...</p>
-          </div>
-          <div class="detail-item">
-            <h4>⚠️ Risks & Concerns</h4>
-            <p id="risks">Loading...</p>
-          </div>
-          <div class="detail-item">
-            <h4>🛠️ Recommended Treatment</h4>
-            <p id="treatment">Loading...</p>
-          </div>
-          <div class="detail-item">
-            <h4>🏠 Prevention Tips</h4>
-            <ul id="prevention"></ul>
-          </div>
-        </div>
-
-        <div class="estimate-box">
-          <h4>💰 Estimated Treatment Cost</h4>
-          <div class="estimate-price" id="priceRange">$100 - $200</div>
-          <p class="estimate-note">Final price depends on infestation severity and property size</p>
-        </div>
+  <section class="services" id="services">
+    <div class="section-title">
+      <h3>Our Services</h3>
+      <p>Professional solutions for any pest or wildlife problem</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🐜</div>
+        <h4>Pest Control</h4>
+        <p>Ants, roaches, spiders, wasps, bed bugs, fleas, and more. We eliminate infestations at the source.</p>
       </div>
-
-      <div class="cta-box">
-        <h4>Ready to Get Rid of Your Pest Problem?</h4>
-        <p>Book a professional inspection and treatment today.</p>
-        <div class="cta-buttons">
-          <a href="https://clienthub.getjobber.com/booking/2d41cb32-b8bd-404e-ba90-e86c72bfd527" class="btn-dark">📅 Book Service</a>
-          <a href="tel:+19189216913" class="btn-outline-dark">📞 (918) 921-6913</a>
-        </div>
+      <div class="service-card">
+        <div class="service-icon">🦝</div>
+        <h4>Wildlife Removal</h4>
+        <p>Raccoons, opossums, skunks, armadillos, and more. Humane trapping and relocation.</p>
       </div>
-
-      <div style="text-align: center; margin-top: 24px;">
-        <button class="btn-primary" id="newAnalysis" style="background: var(--navy-light); color: var(--white); border: 1px solid rgba(255,255,255,0.2);">
-          🔄 Analyze Another Image
-        </button>
+      <div class="service-card">
+        <div class="service-icon">🐀</div>
+        <h4>Rodent Control</h4>
+        <p>Mice, rats, and squirrels. Complete removal plus exclusion to prevent re-entry.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🐍</div>
+        <h4>Snake Removal</h4>
+        <p>Safe removal of venomous and non-venomous snakes from your property.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🦇</div>
+        <h4>Bat Exclusion</h4>
+        <p>Humane bat removal and permanent exclusion. We seal entry points for good.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <h4>Exclusion & Repair</h4>
+        <p>Seal entry points, repair damage, and prevent future wildlife intrusions.</p>
       </div>
     </div>
-  </main>
+  </section>
 
-  <script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const previewContainer = document.getElementById('previewContainer');
-    const previewImage = document.getElementById('previewImage');
-    const fileName = document.getElementById('fileName');
-    const uploadPrompt = document.getElementById('uploadPrompt');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const loading = document.getElementById('loading');
-    const results = document.getElementById('results');
-    const errorDiv = document.getElementById('error');
-    const removeBtn = document.getElementById('removeBtn');
-    const newAnalysisBtn = document.getElementById('newAnalysis');
+  <section class="ai-section" id="ai-tool">
+    <div class="ai-inner">
+      <h3>🤖 Free <span>AI Pest Identifier</span></h3>
+      <p>Not sure what's bugging you? Take a photo and our AI will identify the pest and give you an instant estimate.</p>
+      <div class="ai-steps">
+        <div class="ai-step">
+          <span class="step-num">1</span>
+          <div class="step-text">
+            <h5>Snap a Photo</h5>
+            <p>Take a picture of the pest, droppings, or damage</p>
+          </div>
+        </div>
+        <div class="ai-step">
+          <span class="step-num">2</span>
+          <div class="step-text">
+            <h5>AI Analysis</h5>
+            <p>Our AI identifies the pest in seconds</p>
+          </div>
+        </div>
+        <div class="ai-step">
+          <span class="step-num">3</span>
+          <div class="step-text">
+            <h5>Get Your Estimate</h5>
+            <p>See recommended treatment and price range</p>
+          </div>
+        </div>
+      </div>
+      <a href="/pest-id" class="btn-primary btn-large">📸 Try Pest Identifier</a>
+    </div>
+  </section>
 
-    let currentFile = null;
-    let imageBase64 = null;
+  <section class="coverage">
+    <h3>Serving Eastern Oklahoma</h3>
+    <div class="areas">
+      <span class="area-tag">Tulsa</span>
+      <span class="area-tag">Muskogee</span>
+      <span class="area-tag">Tahlequah</span>
+      <span class="area-tag">Broken Arrow</span>
+      <span class="area-tag">Wagoner</span>
+      <span class="area-tag">Pryor</span>
+      <span class="area-tag">Claremore</span>
+      <span class="area-tag">Fort Gibson</span>
+      <span class="area-tag">Hulbert</span>
+      <span class="area-tag">Gore</span>
+      <span class="area-tag">Checotah</span>
+      <span class="area-tag">McAlester</span>
+    </div>
+  </section>
 
-    // Drag and drop handlers
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
+  <section class="cta-section" id="book">
+    <h3>Ready to Get Started?</h3>
+    <p>Book online or call us now. Same-day service often available.</p>
+    <div class="cta-buttons">
+      <a href="https://clienthub.getjobber.com/booking/2d41cb32-b8bd-404e-ba90-e86c72bfd527" class="btn-dark">📅 Book Online</a>
+      <a href="tel:+19189216913" class="btn-outline-dark">📞 (918) 921-6913</a>
+    </div>
+  </section>
 
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('dragover');
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      const files = e.dataTransfer.files;
-      if (files.length > 0 && files[0].type.startsWith('image/')) {
-        handleFile(files[0]);
-      }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFile(e.target.files[0]);
-      }
-    });
-
-    removeBtn.addEventListener('click', resetUpload);
-    newAnalysisBtn.addEventListener('click', resetUpload);
-
-    function handleFile(file) {
-      currentFile = file;
-      fileName.textContent = file.name;
-      
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        previewImage.src = e.target.result;
-        imageBase64 = e.target.result.split(',')[1];
-        previewContainer.classList.add('visible');
-        uploadPrompt.style.display = 'none';
-        dropZone.classList.add('has-image');
-        analyzeBtn.style.display = 'inline-block';
-        results.classList.remove('visible');
-        errorDiv.classList.remove('visible');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function resetUpload() {
-      currentFile = null;
-      imageBase64 = null;
-      fileInput.value = '';
-      previewContainer.classList.remove('visible');
-      uploadPrompt.style.display = 'block';
-      dropZone.classList.remove('has-image');
-      analyzeBtn.style.display = 'none';
-      results.classList.remove('visible');
-      errorDiv.classList.remove('visible');
-    }
-
-    analyzeBtn.addEventListener('click', async () => {
-      if (!imageBase64) return;
-
-      analyzeBtn.style.display = 'none';
-      loading.classList.add('visible');
-      errorDiv.classList.remove('visible');
-
-      try {
-        const response = await fetch('/api/pest-id', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            image: imageBase64,
-            mediaType: currentFile.type
-          })
-        });
-
-        const result = await response.json();
-
-        if (result.error) {
-          throw new Error(result.error);
-        }
-
-        if (!result.identified) {
-          errorDiv.textContent = '🤔 ' + (result.message || "This doesn't appear to be a pest. Please upload a clear photo of a pest, insect, rodent, or signs of infestation.");
-          errorDiv.classList.add('visible');
-          analyzeBtn.style.display = 'inline-block';
-        } else {
-          displayResults(result);
-        }
-
-      } catch (error) {
-        console.error('Error:', error);
-        errorDiv.textContent = '❌ Error analyzing image: ' + error.message + '. Please try again.';
-        errorDiv.classList.add('visible');
-        analyzeBtn.style.display = 'inline-block';
-      } finally {
-        loading.classList.remove('visible');
-      }
-    });
-
-    function displayResults(result) {
-      document.getElementById('resultIcon').textContent = result.icon || '🐛';
-      document.getElementById('pestName').textContent = result.pestName;
-      document.getElementById('scientificName').textContent = result.scientificName;
-      document.getElementById('confidencePercent').textContent = result.confidence + '%';
-      document.getElementById('confidenceFill').style.width = result.confidence + '%';
-      document.getElementById('description').textContent = result.description;
-      document.getElementById('risks').textContent = result.risks;
-      document.getElementById('treatment').textContent = result.treatment;
-      document.getElementById('priceRange').textContent = result.priceRange;
-
-      const preventionList = document.getElementById('prevention');
-      preventionList.innerHTML = '';
-      result.prevention.forEach(tip => {
-        const li = document.createElement('li');
-        li.textContent = tip;
-        preventionList.appendChild(li);
-      });
-
-      results.classList.add('visible');
-      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  </script>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h5>CONTACT</h5>
+        <p>📞 (918) 921-6913</p>
+        <p>✉️ admin@hansonpestandwildlife.com</p>
+        <p>📍 Eastern Oklahoma</p>
+      </div>
+      <div class="footer-col">
+        <h5>HOURS</h5>
+        <p>Mon-Fri: 7am - 6pm</p>
+        <p>Saturday: 8am - 2pm</p>
+        <p>24/7 Emergency Service</p>
+      </div>
+      <div class="footer-col">
+        <h5>SERVICES</h5>
+        <a href="#services">Pest Control</a>
+        <a href="#services">Wildlife Removal</a>
+        <a href="#services">Rodent Control</a>
+        <a href="#services">Snake Removal</a>
+      </div>
+      <div class="footer-col">
+        <h5>QUICK LINKS</h5>
+        <a href="#book">Book Service</a>
+        <a href="/pest-id">Pest Identifier</a>
+        <a href="tel:+19189216913">Emergency Line</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Hanson Pest & Wildlife. Licensed & Insured. All rights reserved.</p>
+    </div>
+  </footer>
 </body>
 </html>
